@@ -1,4 +1,4 @@
-FROM ruby:3.4.4
+FROM ruby:3.3
 
 ENV BUNDLE_FORCE_RUBY_PLATFORM=true
 
@@ -11,11 +11,11 @@ RUN apt-get update -qq && apt-get install -y \
 
 WORKDIR /app
 
-COPY Gemfile ./
+COPY Gemfile Gemfile.lock* ./
 
 RUN gem install bundler && \
-    bundle config set --global force_ruby_platform true && \
-    bundle install
+  bundle config set --global force_ruby_platform true && \
+  bundle install --jobs 4 --retry 3
 
 COPY . .
 
