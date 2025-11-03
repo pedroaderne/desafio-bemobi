@@ -132,6 +132,8 @@ GEM
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     json (2.15.2)
+    jsonapi-serializer (2.2.0)
+      activesupport (>= 4.2)
     kamal (2.8.2)
       activesupport (>= 7.0)
       base64 (~> 0.2)
@@ -368,6 +370,7 @@ DEPENDENCIES
   debug
   httparty
   image_processing (~> 1.2)
+  jsonapi-serializer
   kamal
   pg (~> 1.6)
   puma (>= 5.0)

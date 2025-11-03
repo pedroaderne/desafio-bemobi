@@ -1,10 +1,15 @@
 class Recharge < ApplicationRecord
   belongs_to :payment
-  
-  def self.get_recharge_from_payment(payment)
-    response = ::RechargeProviderService.new(payment).process
+  before_create :send_to_provider
+
+  def send_to_provider
+    response = ::RechargeProviderService.new(self.payment).process
     response = response.with_indifferent_access
-    
-    self.create(payment: payment, status: response.dig(:status), error_message: response.dig(:error), provider_reference: response.dig(:provider_reference), external_id: response.dig(:external_id))
+
+    self.code = response[:code]
+    self.status = response[:status]
+    self.error_message = response[:error]
+    self.provider_reference = response[:provider_reference]
+    self.external_id = response[:external_id]
   end
 end
