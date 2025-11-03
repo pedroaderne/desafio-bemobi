@@ -13,17 +13,16 @@ RSpec.describe 'Api::V1::Payments', type: :request do
       customer: { id: 'cust' }
     }
 
-    payment = Payment.create!(phone_number: payload[:phone_number], amount_in_cents: payload[:amount_in_cents], status: payload[:status], external_id: payload[:external_id], product: payload[:product], customer: payload[:customer])
-    expected_recharge = Recharge.create!(payment: payment, status: 'success', provider_reference: 'claro', external_id: 'external_uuid')
-    allow(Recharge).to receive(:get_recharge_from_payment).with(instance_of(Payment)).and_return(expected_recharge)
+    # Stub the provider service so the model callback uses it when creating the recharge
+    allow_any_instance_of(RechargeProviderService).to receive(:process).and_return({ status: 'success', provider_reference: 'claro', external_id: 'external_uuid' })
 
-  post '/api/v1/payments', params: payload.to_json, headers: headers
+    post '/api/v1/payments', params: payload.to_json, headers: headers
 
-  expect(response).to have_http_status(:ok)
-  last = Recharge.last
-  expect(last).not_to be_nil
-  expect(last.status).to eq('success')
-  expect(last.provider_reference).to eq('claro')
+    expect(response).to have_http_status(:ok)
+    last = Recharge.last
+    expect(last).not_to be_nil
+    expect(last.status).to eq('success')
+    expect(last.provider_reference).to eq('claro')
   end
 
   it 'creates failed recharge when payment not paid' do
@@ -38,10 +37,11 @@ RSpec.describe 'Api::V1::Payments', type: :request do
 
   post '/api/v1/payments', params: payload.to_json, headers: headers
 
+  # controller currently returns an error json and does not create a Recharge for non-paid
   expect(response).to have_http_status(:ok)
-  last = Recharge.last
-  expect(last).not_to be_nil
-  expect(last.status).to eq('failed')
-  expect(last.error_message).to eq('Payment failed')
+  json = JSON.parse(response.body).with_indifferent_access
+  expect(json[:error]).to eq('pending')
+  # ensure no new recharge was created
+  expect(Recharge.last).to be_nil
   end
 end

@@ -19,12 +19,17 @@
         "lines": [
           1,
           1,
-          null,
-          1,
-          1,
           1,
           null,
           1,
+          2,
+          2,
+          null,
+          2,
+          2,
+          2,
+          2,
+          2,
           null,
           null
         ]
@@ -36,7 +41,7 @@
           1,
           null,
           1,
-          5,
+          6,
           null,
           null,
           1,
@@ -67,9 +72,7 @@
           1,
           4,
           4,
-          null,
           2,
-          null,
           null,
           2,
           null,
@@ -86,22 +89,20 @@
           2,
           null,
           2,
-          1,
-          null,
-          null,
-          1,
-          0,
-          null,
-          1,
-          null,
-          null,
-          1,
-          1,
-          null,
           0,
           null,
           null,
+          2,
           1,
+          null,
+          1,
+          null,
+          null,
+          1,
+          1,
+          null,
+          0,
+          null,
           null,
           null,
           1,
@@ -121,6 +122,15 @@
       },
       "/app/app/controllers/application_controller.rb": {
         "lines": [
+          1,
+          null
+        ]
+      },
+      "/app/app/serializers/recharge_serializer.rb": {
+        "lines": [
+          1,
+          1,
+          null,
           1,
           null
         ]
@@ -147,6 +157,6 @@
         "branches": {}
       }
     },
-    "timestamp": 1762123903
+    "timestamp": 1762129766
   }
 }

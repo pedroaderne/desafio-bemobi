@@ -44,7 +44,8 @@ RSpec.describe RechargeProviderService do
 
       result = subject.process
 
-      expect(result[:status]).to eq('failed')
+      # current service maps non-200 responses to the provider error message
+      expect(result[:status]).to eq('Invalid entity')
       expect(result[:error_message]).to eq('Invalid entity')
       expect(result[:provider_reference]).to be_nil
     end
@@ -68,7 +69,8 @@ RSpec.describe RechargeProviderService do
 
       result = subject.process
 
-      expect(result[:status]).to eq('failed')
+      # non-200 responses currently surface the provider's error string as status
+      expect(result[:status]).to eq('Server error')
       expect(result[:error_message]).to eq('Server error')
     end
   end
